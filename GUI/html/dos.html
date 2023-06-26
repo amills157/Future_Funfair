@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DOS Attack</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/styles.css">
+
+  </head>
+<body>
+  <div class="navbar">
+    <div class="logo_r">
+      <img src="/images/CYBOK-Final-Logo.png" alt="logo">
+    </div>
+    <div class="logo_r">
+      <img src="/images/uwe-cyber.jpg" alt="logo">
+    </div>
+    <a class="active" href="/html/menu.html">Home</a>
+  </div>
+
+  <h2>Denial of Service Attack</h2>
+
+  <div style="margin-left: 10px;">
+
+    <p>
+    Oh no! Someone is attacking the rides. It looks like they're using a Denial of Service to deny our fun! Can you help get the rides working again? 
+    <br>
+    <br>
+    Click on each box to find the information:</p>
+
+  </div>
+
+  <button class="collapsible">What is a DOS attack?</button>
+  <div class="content">
+    <p>A Denial of Service (DOS) attack is used to overwhelm a system so users cannot access information or network resources such as a website. This is done by flooding a host with traffic until they cannot respond or the host crashes.</p>
+  </div>
+  <button class="collapsible">Identifying DOS attacks</button>
+  <div class="content">
+    <p>A DOS attack can cause the LEGO motors to stop or slow down.</p>
+    <p>You can also identify this attack through Wireshark. It will show multiple packets being sent to one IP address.</p>
+    <p>The payloads of these packets are likely to be junk.</p>
+  </div>
+  
+  <br>
+
+  <div class="flowchart" style="text-align: center;">
+    <img src="/images/cybok_cps_dos_flowchart.png" alt="flowchart">
+  </div>
+
+  <br>
+
+  <script src="/js/dos.js"></script>
+
+</body>
+</html>

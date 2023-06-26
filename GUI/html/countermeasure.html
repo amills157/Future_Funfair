@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Countermeasures</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <div class="navbar">
+    <div class="logo_r">
+      <img src="/images/CYBOK-Final-Logo.png" alt="logo">
+    </div>
+    <div class="logo_r">
+      <img src="/images/uwe-cyber.jpg" alt="logo">
+    </div>
+    <a class="active" href="/html/menu.html">Home</a>
+  </div>
+
+  <p></p> <!-- This is to make room for everything below -->
+
+  <h2>Countermeasures</h2>
+
+  <div style="margin-left: 10px;">
+
+    <p>
+    Oh are we glad you're here! The rides are under attack and to make things worse our cyber security team are on them!
+    <br>
+    <br>
+    We need your help to save the day (and the cyber security team). Thankfully we've been learning all about how to protect Cyber Physical Systems from the <a href="/html/cybok.html">Cyber Book of Knowledge (CyBoK)</a>. We've put the important bits below to help you
+    <br>
+    <br>
+    The different attacks can all be stopped in different ways. Click below to learn more and stop the attackers
+    <br>
+    <br>
+
+    Don't forget we need to know the IP address of our Pi Server - Otherwise our commands won't go anywhere! Add it in below
+    
+    <br>
+    <br>
+
+    <label for="server_ip">The IP address of our Pi Server is:</label>
+    <input type="text" id="server_ip" name="server_ip" required>
+    
+    </p>
+  </div>
+
+  <button class="collapsible">Denial of Service</button>
+  <div class="content">
+    <p> </p>
+    <p>To counter a DoS attack we need to stop the sensor being flooded with packets.
+    <br>
+    <br>
+    One way we can do that is by using a wireless shield. This will block all unexpected traffic.
+
+    <div class="flowchart">
+      <img src="/images/cybok_cps_wireless_shield_flowchart.png" alt="flowchart">
+    </div>
+
+    Before we can enable our shield though we need to be able to identify which traffic is the DoS and which is the normal traffic.
+    <br>
+    <br>
+    Enter the IP address of the attacker below. Once you get it right the shield will be enabled.
+    </p>
+    <label for="dos_payload">The IP address of the attacker is:</label>
+    <input type="text" id="dos_payload" name="dos_payload">
+    <br>
+    <br>
+    <button onclick="sendPacket('dos_payload','server_ip')">Enable Shield</button>
+    <br>
+    <br>
+  </div>
+
+  <button class="collapsible">Code Injection</button>
+  <div class="content">
+    <p>
+    To counter a Code Injection attack we can block the IP address, but other malicious actors could do the same. 
+    <br>
+    <br>
+    Much like a wireless shield a firewall can block unexpected traffic on the network and protect our devices against attackers. 
+
+    <div class="flowchart">
+      <img src="/images/cybok_cps_wireless_firewall_flowchart.png" alt="flowchart">
+    </div>
+    Find the attackers IP and enable our firewall to protect our devices. 
+    </p>
+    <label for="ij_payload">IP address of the attacker:</label>
+    <input type="text" id="ij_payload" name="ij_payload">
+    <br>
+    <br>
+    <button onclick="sendPacket('ij_payload','server_ip')">Enable Firewall</button>
+    <br>
+    <br>
+  </div>
+
+  <button class="collapsible">Man in the Middle</button>
+  <div class="content">
+    <p>
+      To counter a MITM attack, you can block the IP address that is the MITM. But we'll still be vulnerable to other malicious actors.
+      <br>
+      <br>
+      We can use a bump-in-the-wire to secure the data we send and stop other people from reading it.
+    
+    <div class="flowchart">
+      <img src="/images/cybok_cps_wireless_bump_flowchart.png" alt="flowchart">
+    </div>
+      Find the attackers IP and then we can block their IP and enable our bump-in-the-wire to secure our traffic.    
+    </p>
+    <label for="mitm_payload">IP address of the attacker:</label>
+    <input type="text" id="mitm_payload" name="mitm_payload">
+    <br>
+    <br>
+    <button onclick="sendPacket('mitm_payload','server_ip')">Secure Our Traffic</button>
+    <br>
+    <br>
+  </div>
+
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight){
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            } 
+        });
+    }
+
+    function sendPacket(payload, pi_server_ip) {
+      var server_ip = document.getElementById(pi_server_ip).value.trim();
+      var attacker_ip = document.getElementById(payload).value.trim();
+      var DOSexpectedIP_A = "27.19.88.195"; // Replace with DOS attacker's IP
+      var MITMexpectedIP_A = "192.168.99.201"; // Replace with MITM attacker's IP
+      var IJexpectedIP_A = "136.163.89.10"; // Replace with Injection attacker's IP
+      
+      var DOSexpectedIP_B = "27.19.88.196"; // Replace with DOS attacker's IP
+      var MITMexpectedIP_B = "192.168.99.202"; // Replace with MITM attacker's IP
+      var IJexpectedIP_B = "136.163.89.11"; // Replace with Injection attacker's IP
+
+      if (attacker_ip == IJexpectedIP_A || attacker_ip == IJexpectedIP_B) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://"+server_ip+":4242", true); // Replace with the lego server's IP
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('TCP packet sent successfully.');
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(attacker_ip);
+        alert("Firewall Enabled!");
+      }
+      
+      else if (attacker_ip == MITMexpectedIP_A || attacker_ip == MITMexpectedIP_B) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://"+server_ip+":4242", true); // Replace with the lego server's IP
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('TCP packet sent successfully.');
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(attacker_ip);
+        alert("Bump Device Activated!");
+      }
+      
+      else if (attacker_ip == DOSexpectedIP_A || attacker_ip == DOSexpectedIP_B) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://"+server_ip+":4242", true); // Replace with the lego server's IP
+        xhr.setRequestHeader("Content-Type", "text/plain");
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            console.log('TCP packet sent successfully.');
+            console.log(xhr.responseText);
+          }
+        };
+        xhr.send(attacker_ip);
+        alert("Wireless Shield Enabled!");
+      } else {
+        alert("Wrong IP address for Attacker. Try again.");
+      }
+    }
+  </script>
+</body>
+</html>
