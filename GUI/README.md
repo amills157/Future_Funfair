@@ -16,7 +16,7 @@ When you first load the page it will show the content of the `GUI` folder. Click
 From there you can navigate the UI as you would any website, using the inbuilt buttons and options. 
 
 ### Using this in the activity
-This UI is designed for use as part of the Future Funfair activity. It contains all information based on the attacks that currently work on the system as well as a (simple) breakdown of what a Cyber Physical System is and a link to local CyBoK material. 
+This UI is designed for use as part of the Future Funfair activity. It contains all information based on the attacks that currently work on the system as well as a (simple) breakdown of what a Cyber Physical System is and a link to local CyBOK material. 
 
 As the UI (and wider activity) is designed to run in a local access network there are no external links to resources. 
 
